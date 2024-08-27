@@ -43,9 +43,21 @@ app.get('/search-jokes', async (req, res) => {
 // Save favorite joke to DB
 app.post('/favourite-joke', (req, res) => {
   const { jokeId, jokeText } = req.body;
-  db.query('INSERT INTO favourites (jokeId, jokeText) VALUES (?, ?)', [jokeId, jokeText], (err, results) => {
-    if (err) return res.status(500).json({ error: 'Failed to save favourite' });
-    res.json({ success: true });
+  
+  // Check if the joke is already in the favorites
+  db.query('SELECT * FROM favourites WHERE jokeId = ?', [jokeId], (err, results) => {
+    if (err) return res.status(500).json({ error: 'Database query error' });
+
+    if (results.length > 0) {
+      // Joke already exists
+      return res.status(400).json({ error: 'Joke already in favourites' });
+    }
+
+    // Insert the joke into favorites
+    db.query('INSERT INTO favourites (jokeId, jokeText) VALUES (?, ?)', [jokeId, jokeText], (err, results) => {
+      if (err) return res.status(500).json({ error: 'Failed to save favourite' });
+      res.json({ success: true });
+    });
   });
 });
 

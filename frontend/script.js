@@ -1,23 +1,22 @@
 const BACKEND_URL = "http://localhost:3000"
 
 async function searchJokes() {
-    const query = document.getElementById("search-query").value;
-    const response = await fetch(`${BACKEND_URL}/search-jokes?query=${query}`);
-    const jokes = await response.json();
-    displayJokes(jokes);
+  const query = document.getElementById("search-query").value;
+  const response = await fetch(`${BACKEND_URL}/search-jokes?query=${query}`);
+  const jokes = await response.json();
+  displayJokes(jokes);
 }
 
 async function favouriteJoke(jokeId, jokeText) {
-    console.log(jokeId, jokeText);
-    await fetch(`${BACKEND_URL}/favourite-joke`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jokeId, jokeText }),
-    });
-    const favouriteJoke = document.getElementById(`favouriteJoke${jokeId}`);
-    favouriteJoke.innerText = "Added!"
-    favouriteJoke.classList.remove("btn-dark");
-    favouriteJoke.classList.add("btn-success");
+  await fetch(`${BACKEND_URL}/favourite-joke`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jokeId, jokeText }),
+  });
+  const favouriteJoke = document.getElementById(`favouriteJoke${jokeId}`);
+  favouriteJoke.innerText = "Added!"
+  favouriteJoke.classList.remove("btn-dark");
+  favouriteJoke.classList.add("btn-success");
 }
 
 function displayJokes(jokes) {
