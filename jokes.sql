@@ -1,0 +1,8 @@
+CREATE DATABASE jokeapp;
+USE jokeapp;
+
+CREATE TABLE favourites (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  jokeId VARCHAR(255) NOT NULL,
+  jokeText TEXT NOT NULL
+);
